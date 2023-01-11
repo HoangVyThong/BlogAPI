@@ -4,6 +4,7 @@ import com.example.blogapi.security.jwt.CustomAccessDeniedHandler;
 import com.example.blogapi.security.jwt.JwtAuthenticationFilter;
 import com.example.blogapi.security.jwt.RestAuthenticationEntryPoint;
 import com.example.blogapi.service.UserService;
+import com.example.blogapi.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
