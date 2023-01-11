@@ -1,6 +1,7 @@
 package com.example.blogapi.controller;
 
 import com.example.blogapi.model.JwtResponse;
+import com.example.blogapi.model.MessageResponse;
 import com.example.blogapi.model.Role;
 import com.example.blogapi.model.User;
 import com.example.blogapi.service.RoleService;
@@ -58,18 +59,18 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<?> createUser(@RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new MessageResponse("Có lỗi xảy ra"), HttpStatus.BAD_REQUEST);
         }
         Iterable<User> users = userService.findAll();
         for (User currentUser : users) {
             if (currentUser.getUsername().equals(user.getUsername())) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new MessageResponse("Username đã tồn tại"),HttpStatus.BAD_REQUEST);
             }
         }
         if (!userService.isCorrectConfirmPassword(user)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new MessageResponse("Mật khẩu không khớp"),HttpStatus.BAD_REQUEST);
         }
         if (user.getRoles() != null) {
             Role role = roleService.findByName("ROLE_ADMIN");
@@ -85,7 +86,7 @@ public class UserController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
         userService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(new MessageResponse("Đăng ký thành công"), HttpStatus.CREATED);
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
