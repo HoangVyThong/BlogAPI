@@ -1,5 +1,6 @@
 package com.example.blogapi.security;
 
+import com.example.blogapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
